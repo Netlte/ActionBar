@@ -1,0 +1,22 @@
+{
+	"name": "netlte/actionbar",
+	"description": "ActionBar component able you create stylish buttons and dropdowns",
+	"keywords": ["actionbar", "netlte", "nette"],
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "Tomáš Holan",
+			"homepage": "https://tomasholan.eu"
+		}
+	],
+	"require": {
+		"php": ">=7.1",
+		"nette/component-model": "^2.4",
+	  	"nette/utils": "^2.4 || ~3.0.0",
+	  	"holabs/ui": "^1.0",
+		"holabs/utils": "^1.0"
+	},
+	"autoload": {
+		"classmap": ["src"]
+	}
+}
