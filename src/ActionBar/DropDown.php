@@ -68,13 +68,16 @@ class DropDown extends Action {
 			}
 
 			$tmpa = [
-				'class' => $this->isAjaxEnabled() ? 'ajax ' : '' . $class
+				'class' => $this->isAjaxEnabled() ? 'ajax ' : '' . $class,
 			];
 
 			if ($this->isDisabled()) {
 				$tmpa['type'] = 'button';
 			} else {
 				$tmpa['href'] = $this->link('select!', ['item' => $name]);
+				if ($this->getTarget() !== null) {
+					$tmpa['target'] = $this->getTarget();
+				}
 			}
 
 			$tmp = Html::el($this->isDisabled() ? 'button' : 'a', $tmpa);
@@ -105,6 +108,11 @@ class DropDown extends Action {
 						'class' => $this->isAjaxEnabled() ? 'ajax ' : '' . $class
 					]
 				);
+
+				if ($this->getTarget() !== null) {
+					$a->setAttribute('target', $this->getTarget());
+				}
+
 				$a->setText($c);
 				$tmp->setHtml($a);
 				$list->addHtml($tmp);
