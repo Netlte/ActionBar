@@ -32,7 +32,7 @@ class Button extends Action {
 	 */
 	public function render() {
 
-		$title = $this->getTitle() ?: !empty($this->getCaption()) ? $this->getCaption() : NULL;
+		$title = $this->getTitle() ?: (!empty($this->getCaption()) ? $this->getCaption() : NULL);
 		$ajax = $this->isAjaxEnabled() ? 'ajax' : '';
 		$attrs = [
 			'href' => $this->link('click!'),
