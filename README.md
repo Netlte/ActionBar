@@ -1,76 +1,57 @@
-Netlte/ActionBar
-===============
+# Netlte > ActionBar
 
-Component that able you create stylish buttons and dropdowns
+[![Build Status](https://badgen.net/travis/netlte/actionbar/)](https://travis-ci.com/Netlte/ActionBar)
+[![Licence](https://badgen.net/packagist/license/netlte/actionbar/)](https://packagist.org/packages/Netlte/ActionBar)
+[![Latest stable](https://badgen.net/packagist/v/netlte/actionbar/)](https://packagist.org/packages/Netlte/ActionBar)
+[![Downloads this Month](https://badgen.net/packagist/dm/netlte/actionbar/)](https://packagist.org/packages/Netlte/ActionBar)
+[![Downloads total](https://badgen.net/packagist/dt/netlte/actionbar/)](https://packagist.org/packages/Netlte/ActionBar)
+[![PHPStan](https://badgen.net/badge/PHPStan/enabled/green/)](https://github.com/phpstan/phpstan)
 
-Installation
-------------
+## Credits
 
-**Requirements:**
- - php 5.6+
- - [nette/component-model](https://github.com/nette/component-model)
- - [nette/utils](https://github.com/nette/utils)
- - [holabs/ui](https://github.com/holabs/ui)
- - [holabs/utils](https://github.com/holabs/utils)
- 
-```sh
+Feel free to use. Your contributions are very welcome. Feel free to publish pull requests.
+
+## Overview
+
+GUI Component for header actions (Buttons & DropDowns)
+
+![Screenshot](.docs/screen.png)
+
+## Install
+
+```
 composer require netlte/actionbar
 ```
+## Documentation
+You can find more info in [.docs](.docs/) folder.
+
+## Versions
+
+| State       | AdminLTE | Version | Branch   | PHP      |
+|-------------|----------|---------|----------|----------|
+| stable      |   `2.0`  | `^1.0`  |  `main`  | `>= 7.4` |
+| NoN         |   `3.0`  | `^2.0`  |  `main`  | `>= 8.0` |
 
 
-Using
------
-Your **SignPresenter** now can looks like this:
+## Tests
 
-```php
-<?php 
-
-/**
- * @author       Tomáš Holan <mail@tomasholan.eu>
- * @package      netlte/actionbar
- * @copyright    Copyright © 2018, Tomáš Holan [www.tomasholan.cz]
- */
-class SignPresenter extends BasePresenter
-{
-
-
-	public function actionDefault() {
-	}
-
-
-	/**
-	 * @return \Netlte\ActionBar 
- 	 */
-	protected function createComponentBar()
-	{
-		$bar = new \Netlte\ActionBar();
-		$button = $bar->addButton(
-			'test',
-			'Testing button',
-			'trash',
-			NULL,
-			\Netlte\ActionBar\Action::SIZE_LG,
-			'success',
-			TRUE,
-			NULL
-			);
-		
-		$button->onClick[] = function(\Netlte\ActionBar\Button $sender) {
-			// Do your jobs ...
-		};
-
-		return $bar;
-	}
-}
+Check code quality and run tests
+```
+composer build
 ```
 
+or separately
 
-```latte
-{block content}
-{control bar}
-{*
-
-...
-
- *}
 ```
+composer cs
+composer analyse
+composer tests
+```
+
+## Authors
+
+| [Tomáš Holan](https://github.com/holantomas)                             |
+|--------------------------------------------------------------------------|
+| ![Avatar](https://avatars3.githubusercontent.com/u/5030499?s=100)        |
+
+

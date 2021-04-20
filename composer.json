@@ -1,22 +1,50 @@
 {
 	"name": "netlte/actionbar",
-	"description": "ActionBar component able you create stylish buttons and dropdowns",
+	"description": "ActionBar component able you create stylish buttons and dropdowns in header",
 	"keywords": ["actionbar", "netlte", "nette"],
-	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"type": "library",
+	"license": "MIT",
+	"homepage": "https://github.com/Netlte/ActionBar",
 	"authors": [
-		{
-			"name": "Tomáš Holan",
-			"homepage": "https://tomasholan.eu"
-		}
+	  {
+		"name": "Tomáš Holan",
+		"homepage": "https://www.holan.dev"
+	  }
 	],
 	"require": {
-		"php": ">=7.1",
-		"nette/component-model": "^2.4",
-	  	"nette/utils": "^2.4 || ~3.0.0",
-	  	"holabs/ui": "^1.0",
-		"holabs/utils": "^1.0"
+		"php": ">=7.4",
+		"netlte/ui": "^1.1"
+	},
+	"require-dev": {
+		"nette/application": "^3.1",
+		"nette/tester": "^2.0",
+		"phpstan/phpstan": "^0.12.59",
+		"phpstan/phpstan-nette": "^0.12.11",
+		"phpstan/phpstan-strict-rules": "^0.12.5",
+		"phpstan/phpstan-deprecation-rules": "^0.12.6",
+		"netlte/coding-standard": "^1.0"
 	},
 	"autoload": {
-		"classmap": ["src"]
+		"psr-4": {
+			"Netlte\\ActionBar\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Netlte\\ActionBar\\Tests\\": "tests/"
+		}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"scripts": {
+		"tests": "tester -s -p php --colors 1 -C tests/Cases",
+		"cs": "phpcs --standard=vendor/netlte/coding-standard/ruleset.xml --extensions=php --tab-width=4 -sp src tests",
+		"cs-fix": "phpcbf --standard=vendor/netlte/coding-standard/ruleset.xml --extensions=php --tab-width=4 -sp src tests",
+		"analyse": "phpstan analyse",
+		"build": [
+			"@cs",
+			"@analyse",
+			"@tests"
+		]
 	}
 }

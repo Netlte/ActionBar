@@ -1,0 +1,36 @@
+{varType \Netlte\ActionBar\DropDown $control}
+{var \Nette\Localization\Translator $translator = $control->getTranslator()}
+{var string|null $title = $translator->translate($control->getTitle() ?: ($control->getCaption() !== '' ? $control->getCaption() : null))}
+{var string $color = 'btn-' . $control->getColor()}
+{var string $size = 'btn-' . $control->getSize()}
+
+<div class="action btn-group">
+    {var array $items = $control->getItems()}
+    {var string $first = reset($items)}
+    {var string $n = key($items)}
+
+    {* If dropdown is disabled and caption is not defined show button with first item *}
+    <button n:if="$control->getCaption() === null && $control->isDisabled()" type="button" n:attr="title => $title" n:class="btn, $size, $color">{$first|translate}</button>
+
+    {* if dropdown is enabled and caption is not defined show anchor with first item *}
+    <a n:if="$control->getCaption() === null && !$control->isDisabled()" n:href="select! item => $n" n:attr="title => $title, target => $control->getTarget()" n:class="$control->isAjaxEnabled() ? ajax, btn, $size, $color">{$first|translate}</a>
+
+    {* Caret on first approach *}
+    <button type="button" data-toggle="dropdown" aria-expanded="false" n:attr="title => $control->getTitle()" n:class="btn, $size, $color, dropdown-toggle, $control->isDisabled() ? disabled">
+        <i n:if="$control->getIcon() !== null" class="{$control->getIcon(true)}"></i>
+        {if $control->getIcon() !== null}&nbsp;{/if}
+        <span n:if="$control->getCaption() !== null">{$control->getCaption()|translate}</span>
+        <span class="caret"></span>
+        <span class="sr-only">{_'netlte.actionbar.dropdown.sr.toggle'}</span>
+    </button>
+
+    {* Render items *}
+    <ul class="dropdown-menu" role="menu" n:inner-foreach="$control->getItems() as $name => $caption">
+        {continueIf $control->getCaption() === null && $iterator->isFirst()}
+        <li>
+            <a n:href="select! item => $name" n:class="$control->isAjaxEnabled() ? ajax" n:attr="target => $control->getTarget()">
+                {$caption|translate}
+            </a>
+        </li>
+    </ul>
+</div>

@@ -1,38 +1,37 @@
-<?php
+<?php declare(strict_types = 1);
 
+namespace Netlte\ActionBar;
 
-namespace Netlte;
-
-use Netlte\ActionBar\Button;
-use Netlte\ActionBar\DropDown;
-use Nette\ComponentModel\Container;
+use Netlte\ActionBar\Exceptions\InvalidArgumentException;
+use Netlte\UI\AbstractControl;
 use Nette\ComponentModel\IComponent;
-use Nette\InvalidArgumentException;
 
 
 /**
- * @author       Tomáš Holan <mail@tomasholan.eu>
+ * @author       Tomáš Holan <tomas@holan.dev>
  * @package      netlte/actionbar
- * @copyright    Copyright © 2017, Tomáš Holan [www.tomasholan.eu]
+ * @copyright    Copyright © 2017, Tomáš Holan [www.holan.dev]
  */
-class ActionBar extends Container {
+class ActionBar extends AbstractControl {
+
+	public const DEFAULT_TEMPLATE = __DIR__ . \DIRECTORY_SEPARATOR . 'templates' . \DIRECTORY_SEPARATOR . 'actionbar.latte';
+
+	static public string $DEFAULT_TEMPLATE = self::DEFAULT_TEMPLATE;
 
 	/**
-	 * @param Button|IComponent $component
-	 * @param string                  $name
-	 * @param string|null             $insertBefore
-	 * @return ActionBar|Container
+	 * @param Button|DropDown|IComponent $component
+	 * @return static
 	 */
-	public function addComponent(IComponent $component, $name, $insertBefore = NULL) {
+	public function addComponent(IComponent $component, ?string $name, ?string $insertBefore = null) {
 
 		if (!$component instanceof Button && !$component instanceof DropDown) {
 			throw new InvalidArgumentException(
-				sprintf(
+				\sprintf(
 					'Method %s expect argument 1 as %s or %s, %s given',
 					__METHOD__,
 					Button::class,
 					DropDown::class,
-					get_class($component)
+					\get_class($component)
 				)
 			);
 		}
@@ -40,26 +39,15 @@ class ActionBar extends Container {
 		return parent::addComponent($component, $name, $insertBefore);
 	}
 
-	/**
-	 * @param string      $name
-	 * @param string      $caption
-	 * @param string|null $icon
-	 * @param string|null $title
-	 * @param string|null $size
-	 * @param string|null $color
-	 * @param bool        $ajax
-	 * @param string|null $insertBefore
-	 * @return Button
-	 */
 	public function addButton(
 		string $name,
 		string $caption,
-		string $icon = NULL,
-		string $title = NULL,
-		string $size = NULL,
-		string $color = NULL,
-		bool $ajax = FALSE,
-		string $insertBefore = NULL
+		?string $icon = null,
+		?string $title = null,
+		?string $size = null,
+		?string $color = null,
+		bool $ajax = false,
+		?string $insertBefore = null
 	): Button {
 
 		$button = new Button($caption);
@@ -67,39 +55,25 @@ class ActionBar extends Container {
 		$button->setTitle($title);
 		$button->enableAjax($ajax);
 
-		if ($size) {
-			$button->setSize($size);
-		}
+		$button->setSize($size ?? Button::DEFAULT_SIZE);
+		$button->setColor($color ?? Button::DEFAULT_COLOR_CLASS);
 
-		if ($color) {
-			$button->setColor($color);
-		}
+		$button->setTranslator($this->getTranslator());
 
 		$this->addComponent($button, $name, $insertBefore);
 
 		return $button;
 	}
 
-	/**
-	 * @param string      $name
-	 * @param string      $caption
-	 * @param string|null $icon
-	 * @param string|null $title
-	 * @param string|null $size
-	 * @param string|null $color
-	 * @param bool        $ajax
-	 * @param string|null $insertBefore
-	 * @return DropDown
-	 */
 	public function addDropDown(
 		string $name,
-		string $caption = NULL,
-		string $icon = NULL,
-		string $title = NULL,
-		string $size = NULL,
-		string $color = NULL,
-		bool $ajax = FALSE,
-		string $insertBefore = NULL
+		?string $caption = null,
+		?string $icon = null,
+		?string $title = null,
+		?string $size = null,
+		?string $color = null,
+		bool $ajax = false,
+		?string $insertBefore = null
 	): DropDown {
 
 		$dropDown = new DropDown($caption);
@@ -107,13 +81,10 @@ class ActionBar extends Container {
 		$dropDown->setTitle($title);
 		$dropDown->enableAjax($ajax);
 
-		if ($size) {
-			$dropDown->setSize($size);
-		}
+		$dropDown->setSize($size ?? DropDown::DEFAULT_SIZE);
+		$dropDown->setColor($color ?? DropDown::DEFAULT_COLOR_CLASS);
 
-		if ($color) {
-			$dropDown->setColor($color);
-		}
+		$dropDown->setTranslator($this->getTranslator());
 
 		$this->addComponent($dropDown, $name, $insertBefore);
 
@@ -121,18 +92,16 @@ class ActionBar extends Container {
 	}
 
 	/**
-	 * @param string $name
-	 * @param bool   $throw
-	 * @return Button|DropDown|null
+	 * @return Button|DropDown|IComponent|null
 	 */
-	public function getAction(string $name, bool  $throw = TRUE) {
+	public function getAction(string $name, bool $throw = true): ?IComponent {
 		return parent::getComponent($name, $throw);
 	}
 
-	public function render() {
-		foreach ($this->getComponents() as $button) {
-			$button->render();
-		}
+	public function render(): void {
+		$this->getTemplate()->setTranslator($this->getTranslator());
+		$this->getTemplate()->setFile($this->getTemplateFile() ?? self::DEFAULT_TEMPLATE);
+		$this->getTemplate()->render();
 	}
 
 

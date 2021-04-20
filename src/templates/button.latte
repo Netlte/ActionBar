@@ -1,0 +1,10 @@
+{varType \Netlte\ActionBar\Button $control}
+{var \Nette\Localization\Translator $translator = $control->getTranslator()}
+{var string|null $title = $translator->translate($control->getTitle() ?: ($control->getCaption() !== '' ? $control->getCaption() : null))}
+{var string $color = 'btn-' . $control->getColor()}
+{var string $size = 'btn-' . $control->getSize()}
+<a n:href="click!" n:attr="title => $title, target => $control->getTarget()" n:class="$control->isAjaxEnabled() ? ajax, action, btn, $size, $color, $control->isDisabled() ? disabled">
+    <i n:if="$control->getIcon() !== null" class="{$control->getIcon(true)}"></i>
+    {if $control->getIcon() !== null}&nbsp;{/if}
+    <span>{$control->getCaption()|translate}</span>
+</a>
